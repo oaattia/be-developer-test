@@ -6,45 +6,23 @@ class Router
 {
     private $routes = [];
 
-    public function addRoute(string $method, string $path, string $controllerMethod): void
+    public function addRoute($method, $route, $controllerName, $methodName): void
     {
-        $this->routes[$method][$path] = $controllerMethod;
+        $this->routes[] = [$method, $route, $controllerName, $methodName];
     }
 
-    public function handle(string $method, string $path): void
+    public function handleRequest($method, $url): mixed
     {
-        if (!isset($this->routes[$method])) {
-            $this->notFound();
-            return;
+        foreach ($this->routes as $route) {
+            list($routeMethod, $routeUrl, $controllerName, $methodName) = $route;
+            if ($method == $routeMethod && preg_match($routeUrl, $url, $matches)) {
+                array_shift($matches); // remove the full match from the array
+                $controller = new $controllerName();
+                return call_user_func_array([$controller, $methodName], $matches);
+            }
         }
-
-        $controllerMethod = $this->routes[$method][$path] ?? null;
-
-        if (!$controllerMethod) {
-            $this->notFound();
-            return;
-        }
-
-        [$controllerName, $methodName] = explode('@', $controllerMethod);
-
-        if (!class_exists($controllerName)) {
-            $this->notFound();
-            return;
-        }
-
-        $controller = new $controllerName();
-
-        if (!method_exists($controller, $methodName)) {
-            $this->notFound();
-            return;
-        }
-
-        $controller->$methodName();
-    }
-
-    private function notFound(): void
-    {
-        http_response_code(404);
-        echo 'Page not found';
+        // If no matching route was found, return a 404 error
+        header('HTTP/1.1 404 Not Found');
+        die('404 Not Found');
     }
 }

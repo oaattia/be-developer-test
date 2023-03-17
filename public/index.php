@@ -5,6 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $router = new Router();
 
-$router->addRoute('GET', '/', '\App\Controller\HomeController@index');
+// Add a route for GET requests to /sample.jpg/crop/x/12/y/12/w/2/h/2
+$router->addRoute('GET', '/^\/(.*\.\w+)\/crop\/x\/(\d+)\/y\/(\d+)\/w\/(\d+)\/h\/(\d+)$/', '\App\Controller\ImageController', 'crop');
 
-$router->handle($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+$router->handleRequest($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

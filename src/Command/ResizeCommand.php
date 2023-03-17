@@ -10,10 +10,8 @@ class ResizeCommand implements ImageCommand
     private int $height;
     private string $filename;
 
-    public function __construct(int $x, int $y, int $width, int $height, string $filename) 
+    public function __construct(int $width, int $height, string $filename) 
     {
-        $this->x = $x;
-        $this->y = $y;
         $this->width = $width;
         $this->height = $height;
         $this->filename = $filename;
@@ -22,10 +20,10 @@ class ResizeCommand implements ImageCommand
     public function execute(): void
     {
         $image = imagecreatefromjpeg($this->filename);
-        $resized = imagescale($image, $newWidth, $newHeight, IMG_BICUBIC_FIXED);
+        $resized = imagescale($image, $width, $height, IMG_BICUBIC_FIXED);
         if ($resized !== false) {
-            $this->width = $newWidth;
-            $this->height = $newHeight;
+            $this->width = $width;
+            $this->height = $height;
             $this->saveImage($resized);
         }
     }

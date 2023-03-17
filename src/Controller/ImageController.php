@@ -2,15 +2,21 @@
 
 namespace App\Controller;
 
-use App\Config\Env;
+use App\Command\CropCommand;
 
 class ImageController extends BaseController
 {
     public function crop(string $filename, int $x, int $y, int $w, int $h): void
     {
-        $env = new Env();
-        $imagePath = $env->get('IMAGE_PATH');
-        var_dump($imagePath, $filename, $x, $y, $w, $h);
+        $command = new CropCommand(
+            $x, 
+            $y, 
+            $w, 
+            $h, 
+            $this->getImage($filename), 
+            $this->getCroppedOutput($filename)
+        );
+        $command->execute();
     }
 
     public function resize(): void

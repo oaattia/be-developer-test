@@ -1,11 +1,10 @@
 <?php
+use App\Router;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use App\Router;
-
 $router = new Router();
 
-$router->addRoute('GET', '/', '\App\HomeController@index');
+$router->addRoute('GET', '/', '\App\Controller\HomeController@index');
 
 $router->handle($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

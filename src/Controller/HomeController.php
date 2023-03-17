@@ -6,6 +6,6 @@ class HomeController
 {
     public function index(): void
     {
-        echo "hello Worl";
+        echo "hello World from controller";
     }
 }

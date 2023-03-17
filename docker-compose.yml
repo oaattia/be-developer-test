@@ -8,12 +8,12 @@ services:
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
-      - ./src:/var/www
+      - ./:/var/www
   nginx:
     image: nginx:1.23-alpine
     restart: unless-stopped
     ports:
       - 8000:80
     volumes:
-      - ./src:/var/www
+      - ./:/var/www
       - ./nginx:/etc/nginx/conf.d

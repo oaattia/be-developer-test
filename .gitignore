@@ -1,7 +1,6 @@
 .git/
 .env
-public/.DS_Store
-public/cropped/
+.DS_Store
 public/img/
-public/resized/
+public/modified/
 vendor/

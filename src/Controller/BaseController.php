@@ -3,26 +3,22 @@
 namespace App\Controller;
 
 use App\Config\Env;
+use App\ViewRenderer;
 
 class BaseController
 {
-    private array $request;
-    private string $image;
-    private string $croppedOutput;
-    private string $resizedOutput;
+    protected array $request;
+    protected string $image;
+    protected string $modifiedOutput;
+    protected ViewRenderer $view;
 
     public function __construct()
     {
-        $env = new Env();
-
-        $imagePath = __DIR__ . '/../../' .  $env->get('IMAGE_PATH');
-        $croppedOutputPath = __DIR__ . '/../../' . $env->get('CROPPED_PATH');
-        $resizedOutputPath = __DIR__ . '/../../' . $env->get('RESIZED_PATH');
-
         $this->request = $_REQUEST;
-        $this->image = $imagePath;
-        $this->croppedOutput = $croppedOutputPath;
-        $this->resizedOutput = $resizedOutputPath;
+        $this->view = new ViewRenderer(__DIR__ . '/../../views');
+        $env = new Env();
+        $this->image = __DIR__ . '/../../' .  $env->get('IMAGE_PATH');
+        $this->modifiedOutput = __DIR__ . '/../../' . $env->get('MODIFIED_IMG_PATH');
     }
 
     protected function getRequestParams(string $key, mixed $default = null): mixed
@@ -37,11 +33,11 @@ class BaseController
 
     protected function getCroppedOutput(string $filename): string
     {
-        return $this->croppedOutput . $filename;
+        return $this->modifiedOutput . 'cropped_' . $filename;
     }
 
     protected function getResizedOutput(string $filename): string
     {
-        return $this->resizedOutput . $filename;
+        return $this->modifiedOutput . 'resized_' . $filename;
     }
 }

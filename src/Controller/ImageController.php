@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Command\CropCommand;
+use App\Command\ResizeCommand;
 
 class ImageController extends BaseController
 {
@@ -14,13 +15,32 @@ class ImageController extends BaseController
             $w, 
             $h, 
             $this->getImage($filename), 
-            $this->getCroppedOutput($filename)
+            $outputImage = $this->getCroppedOutput($filename)
         );
         $command->execute();
+
+        $redirectedPath = basename($outputImage);
+        header("Location: /$redirectedPath");
     }
 
-    public function resize(): void
+
+    public function resize(string $filename, int $w, int $h): void
     {
-        echo "from resize function";
+        $command = new ResizeCommand(
+            $w, 
+            $h, 
+            $this->getImage($filename), 
+            $outputImage = $this->getResizedOutput($filename)
+        );
+        $command->execute();
+
+        $redirectedPath = basename($outputImage);
+        header("Location: /$redirectedPath");
+    }
+
+
+    public function index(string $filename): void
+    {
+        $this->view->render('image/index', ['filename' => $filename]);
     }
 }

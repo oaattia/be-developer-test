@@ -1,6 +1,6 @@
-# PHP Image Processing Library
+# PHP Image Processing 
 
-A PHP library for basic image processing operations, including cropping and resizing.
+A PHP project for basic image processing operations, including cropping and resizing.
 
 ## Requirements
 

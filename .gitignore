@@ -1,6 +1,4 @@
 .git/
 .env
 .DS_Store
-public/img/
-public/modified/
 vendor/
